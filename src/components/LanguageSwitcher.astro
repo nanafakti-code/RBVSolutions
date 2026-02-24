@@ -1,0 +1,44 @@
+---
+import { languages } from "../i18n/ui";
+import { getLangFromUrl } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+---
+
+<div class="relative group z-50">
+    <button
+        class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+    >
+        <span class="uppercase">{lang}</span>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-chevron-down"
+            ><path d="m6 9 6 6 6-6"></path></svg
+        >
+    </button>
+
+    <div
+        class="absolute right-0 top-full mt-2 w-32 bg-dark-card border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right"
+    >
+        <div class="py-1">
+            {
+                Object.entries(languages).map(([code, label]) => (
+                    <a
+                        href={`/${code}/`}
+                        class={`block px-4 py-2 text-sm hover:bg-white/5 transition-colors ${code === lang ? "text-primary font-bold" : "text-gray-400"}`}
+                    >
+                        {label}
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</div>

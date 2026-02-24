@@ -1,0 +1,76 @@
+---
+
+---
+
+<div
+    id="cursor-dot"
+    class="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full pointer-events-none z-[9999] mix-blend-difference transition-transform duration-100"
+>
+</div>
+<div
+    id="cursor-outline"
+    class="fixed top-0 left-0 w-8 h-8 border border-white/50 rounded-full pointer-events-none z-[9999] mix-blend-difference transition-all duration-300 ease-out"
+>
+</div>
+
+<script>
+    const cursorDot = document.getElementById("cursor-dot");
+    const cursorOutline = document.getElementById("cursor-outline");
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let outlineX = 0;
+    let outlineY = 0;
+
+    window.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (cursorDot) {
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+            cursorDot.animate(
+                {
+                    left: `${mouseX}px`,
+                    top: `${mouseY}px`,
+                },
+                { duration: 100, fill: "forwards" },
+            );
+        }
+    });
+
+    const animateOutline = () => {
+        if (cursorOutline) {
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
+
+            cursorOutline.style.left = `${outlineX - 16}px`; // Center the 32px outline
+            cursorOutline.style.top = `${outlineY - 16}px`;
+        }
+        requestAnimationFrame(animateOutline);
+    };
+    animateOutline();
+
+    // Hover interactions
+    const iteractables = document.querySelectorAll("a, button, .interactive");
+
+    iteractables.forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+            cursorOutline?.classList.add(
+                "scale-150",
+                "bg-white/10",
+                "border-transparent",
+            );
+            cursorDot?.classList.add("scale-0");
+        });
+
+        el.addEventListener("mouseleave", () => {
+            cursorOutline?.classList.remove(
+                "scale-150",
+                "bg-white/10",
+                "border-transparent",
+            );
+            cursorDot?.classList.remove("scale-0");
+        });
+    });
+</script>

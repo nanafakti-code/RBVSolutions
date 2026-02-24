@@ -1,0 +1,137 @@
+---
+import Section from "./ui/Section.astro";
+import Container from "./ui/Container.astro";
+import SectionHeader from "./ui/SectionHeader.astro";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+    lang: "es" | "en";
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const testimonials = [
+    {
+        quote:
+            lang === "es"
+                ? "Novatlas transformó nuestra presencia digital por completo. Su atención al detalle y enfoque futurista nos posicionó como líderes en nuestra industria."
+                : "Novatlas completely transformed our digital presence. Their attention to detail and futuristic approach positioned us as leaders in our industry.",
+        author: "Elena Rodriguez",
+        role: "CEO, TechFlow",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80",
+    },
+    {
+        quote:
+            lang === "es"
+                ? "El equipo entregó más allá de nuestras expectativas. La calculadora de precios dinámica aumentó nuestros leads en un 40% el primer mes."
+                : "The team delivered beyond our expectations. The dynamic pricing calculator increased our leads by 40% in the first month.",
+        author: "Michael Chen",
+        role: "Founder, DataSphere",
+        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80",
+    },
+    {
+        quote:
+            lang === "es"
+                ? "Diseño impresionante y rendimiento ultrarrápido. No podríamos estar más felices con nuestra nueva plataforma de e-commerce."
+                : "Stunning design and lightning-fast performance. We couldn't be happier with our new e-commerce platform.",
+        author: "Sarah Johnson",
+        role: "Marketing Dir, FashionNova",
+        image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80",
+    },
+];
+
+const logos = [
+    "Microsoft",
+    "Google",
+    "Amazon",
+    "Spotify",
+    "Slack",
+    "Adobe",
+    "Netflix",
+    "Tesla",
+];
+---
+
+<Section id="testimonials" className="bg-white/5">
+    <Container>
+        <div class="text-center mb-16">
+            <p
+                class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-8"
+            >
+                {lang === "es" ? "Con la confianza de" : "Trusted by"}
+            </p>
+
+            <!-- Infinite Logo Slider -->
+            <div class="relative w-full overflow-hidden mask-linear-fade">
+                <div class="flex gap-16 animate-infinite-scroll w-max">
+                    {
+                        [...logos, ...logos, ...logos].map((logo) => (
+                            <span class="text-2xl font-display font-bold text-gray-600 hover:text-white transition-colors cursor-default whitespace-nowrap">
+                                {logo}
+                            </span>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+
+        <SectionHeader
+            title={lang === "es" ? "Historias de Éxito" : "Success Stories"}
+            subtitle={lang === "es" ? "Testimonios" : "Testimonials"}
+        />
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {
+                testimonials.map((item) => (
+                    <div class="glass-card p-8 rounded-2xl relative">
+                        <div class="text-primary text-6xl font-serif absolute top-4 left-6 opacity-20">
+                            "
+                        </div>
+                        <p class="text-gray-300 mb-6 relative z-10 italic">
+                            {item.quote}
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <img
+                                src={item.image}
+                                alt={item.author}
+                                class="w-12 h-12 rounded-full object-cover border border-white/20"
+                            />
+                            <div>
+                                <h4 class="font-bold text-white text-sm">
+                                    {item.author}
+                                </h4>
+                                <p class="text-xs text-primary">{item.role}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </Container>
+</Section>
+
+<style>
+    .mask-linear-fade {
+        mask-image: linear-gradient(
+            to right,
+            transparent,
+            black 20%,
+            black 80%,
+            transparent
+        );
+    }
+
+    @keyframes infinite-scroll {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-33.33%);
+        }
+    }
+
+    .animate-infinite-scroll {
+        animation: infinite-scroll 30s linear infinite;
+    }
+</style>

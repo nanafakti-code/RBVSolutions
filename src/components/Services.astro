@@ -1,0 +1,74 @@
+---
+import Section from "./ui/Section.astro";
+import Container from "./ui/Container.astro";
+import SectionHeader from "./ui/SectionHeader.astro";
+import Card from "./ui/Card.astro";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang: "es" | "en";
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const services = [
+  {
+    title: { es: "Apps DAM", en: "DAM Apps" },
+    description: {
+      es: "Software eficiente y multiplataforma.",
+      en: "Efficient and multiplatform software.",
+    },
+    icon: "code",
+    color: "text-primary",
+  },
+  {
+    title: { es: "Web Moderno", en: "Modern Web" },
+    description: {
+      es: "Sitios rápidos con Astro y Tailwind.",
+      en: "Fast sites with Astro and Tailwind.",
+    },
+    icon: "layout",
+    color: "text-secondary",
+  },
+  {
+    title: { es: "Backend", en: "Backend" },
+    description: {
+      es: "Sistemas robustos en Java y PHP.",
+      en: "Robust systems in Java and PHP.",
+    },
+    icon: "database",
+    color: "text-accent",
+  },
+];
+---
+
+<Section id="services">
+  <Container>
+    <SectionHeader
+      title={t("services.title")}
+      subtitle={t("services.subtitle")}
+      description={t("services.desc")}
+    />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {
+        services.map((service) => (
+          <Card className="group">
+            <div
+              class={`mb-6 p-4 rounded-xl bg-white/5 w-fit border border-white/10 ${service.color} group-hover:bg-white/10 transition-colors`}
+            >
+              <span class="text-3xl font-display font-bold">⚡</span>
+            </div>
+            <h3 class="text-xl font-bold font-display mb-3 group-hover:text-primary transition-colors">
+              {service.title[lang]}
+            </h3>
+            <p class="text-gray-400 leading-relaxed">
+              {service.description[lang]}
+            </p>
+          </Card>
+        ))
+      }
+    </div>
+  </Container>
+</Section>

@@ -1,23 +1,116 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import "../styles/global.css";
+import "@fontsource/inter";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/orbitron";
+import "@fontsource/orbitron/500.css";
+import "@fontsource/orbitron/700.css";
+import "@fontsource/orbitron/900.css";
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+import CustomCursor from "../components/ui/CustomCursor.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: "es" | "en";
+}
+
+const {
+  title,
+  description = "Premium web development and digital solutions for the future.",
+  lang = "es",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+
+    <!-- Hreflang Tags -->
+    <link rel="alternate" hreflang="es" href={`https://example.com/es/`} />
+    <link rel="alternate" hreflang="en" href={`https://example.com/en/`} />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={`https://example.com/es/`}
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content="/og-image.jpg" />
+  </head>
+  <body class="bg-dark text-white selection:bg-primary selection:text-white">
+    <div
+      class="fixed inset-0 -z-10 h-full w-full bg-dark bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"
+    >
+    </div>
+    <div
+      class="absolute top-0 z-[-2] h-screen w-screen bg-dark bg-[radial-gradient(100%_50%_at_50%_0%,rgba(0,163,255,0.13)_0,rgba(0,163,255,0)_50%,rgba(0,163,255,0)_100%)]"
+    >
+    </div>
+
+    <CustomCursor />
+    <slot />
+
+    <script>
+      import Lenis from "lenis";
+
+      // Initialize Lenis for smooth scrolling
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+        smoothWheel: true,
+      });
+
+      function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      requestAnimationFrame(raf);
+
+      // Simple mouse glow effect
+      const blob = document.getElementById("blob");
+
+      window.onpointermove = (event) => {
+        const { clientX, clientY } = event;
+
+        if (blob) {
+          blob.animate(
+            {
+              left: `${clientX}px`,
+              top: `${clientY}px`,
+            },
+            { duration: 3000, fill: "forwards" },
+          );
+        }
+      };
+
+      // Language Persistence check
+      // Only runs on client side
+      const path = window.location.pathname;
+      const lang = path.split("/")[1];
+      if (lang === "es" || lang === "en") {
+        localStorage.setItem("preferred_lang", lang);
+      }
+    </script>
+  </body>
+</html>

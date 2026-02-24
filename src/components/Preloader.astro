@@ -1,0 +1,47 @@
+<div
+    id="preloader"
+    class="fixed inset-0 z-[100] bg-dark flex flex-col items-center justify-center transition-opacity duration-500"
+>
+    <div class="relative w-24 h-24 mb-8">
+        <div class="absolute inset-0 border-4 border-white/10 rounded-full">
+        </div>
+        <div
+            class="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin"
+        >
+        </div>
+        <div
+            class="absolute inset-0 flex items-center justify-center font-display font-bold text-xl"
+        >
+            <span id="progress text-white">0%</span>
+        </div>
+    </div>
+    <div
+        class="text-gray-400 font-display tracking-widest text-sm animate-pulse"
+    >
+        LOADING SYSTEM
+    </div>
+</div>
+
+<script>
+    const preloader = document.getElementById("preloader");
+    const progress = document.getElementById("progress");
+
+    // Simulate loading
+    let load = 0;
+    const interval = setInterval(() => {
+        load += Math.random() * 10;
+        if (load > 100) load = 100;
+
+        if (progress) progress.innerText = Math.floor(load) + "%";
+
+        if (load === 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                if (preloader) {
+                    preloader.style.opacity = "0";
+                    preloader.style.pointerEvents = "none";
+                }
+            }, 500);
+        }
+    }, 100);
+</script>

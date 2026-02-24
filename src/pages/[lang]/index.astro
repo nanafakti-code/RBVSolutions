@@ -1,0 +1,38 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Hero from "../../components/Hero.astro";
+import Services from "../../components/Services.astro";
+import Portfolio from "../../components/Portfolio.astro";
+import Pricing from "../../components/Pricing.astro";
+import FAQ from "../../components/FAQ.astro";
+import Contact from "../../components/Contact.astro";
+import Footer from "../../components/Footer.astro";
+import { languages } from "../../i18n/ui";
+import StorySection from "../../components/StorySection.astro";
+import Preloader from "../../components/Preloader.astro";
+import Testimonials from "../../components/Testimonials.astro";
+
+export function getStaticPaths() {
+    return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: "es" | "en" };
+---
+
+<Layout title="Rafael Blanco RBV | Soluciones Web Premium" lang={lang}>
+    <Preloader />
+    <Navbar lang={lang} />
+
+    <main>
+        <Hero lang={lang} />
+        <StorySection lang={lang} />
+        <Services lang={lang} />
+        <Portfolio lang={lang} />
+        <Testimonials lang={lang} />
+        <FAQ lang={lang} />
+        <Contact lang={lang} />
+    </main>
+
+    <Footer lang={lang} />
+</Layout>

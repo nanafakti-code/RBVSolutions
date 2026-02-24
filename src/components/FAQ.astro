@@ -1,0 +1,92 @@
+---
+import Section from "./ui/Section.astro";
+import Container from "./ui/Container.astro";
+import SectionHeader from "./ui/SectionHeader.astro";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+    lang: "es" | "en";
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const faqs = [
+    {
+        question:
+            lang === "es"
+                ? "¿Cuánto tarda un proyecto típico?"
+                : "How long does a typical project take?",
+        answer:
+            lang === "es"
+                ? "Un sitio web estándar toma de 4 a 6 semanas. Aplicaciones más complejas o e-commerce pueden tomar de 8 a 12 semanas dependiendo de los requisitos."
+                : "A standard website typically takes 4-6 weeks from concept to launch. More complex applications or e-commerce platforms may take 8-12 weeks depending on specific requirements.",
+    },
+    {
+        question:
+            lang === "es"
+                ? "¿Ofrecen soporte post-lanzamiento?"
+                : "Do you offer post-launch support?",
+        answer:
+            lang === "es"
+                ? "Absolutamente. Ofrecemos 30 días de soporte gratuito tras el lanzamiento. También tenemos paquetes de mantenimiento continuo."
+                : "Absolutely. We provide 30 days of free support after launch to ensure everything runs smoothly. We also offer ongoing maintenance packages to keep your site secure and up-to-date.",
+    },
+    {
+        question:
+            lang === "es"
+                ? "¿Pueden rediseñar mi sitio web existente?"
+                : "Can you redesign my existing website?",
+        answer:
+            lang === "es"
+                ? "¡Sí! Nos especializamos en modernizar sitios web heredados con diseño y tecnología de vanguardia, preservando tu SEO."
+                : "Yes! We specialize in modernizing legacy websites with cutting-edge design and technology while preserving your SEO ranking and content value.",
+    },
+    {
+        question:
+            lang === "es"
+                ? "¿Qué tecnología utilizan?"
+                : "What technology do you use?",
+        answer:
+            lang === "es"
+                ? "Principalmente usamos stacks modernos como Astro, React, Next.js y TailwindCSS para frontend, asegurando rendimiento ultrarrápido."
+                : "We primarily use modern stacks like Astro, React, Next.js, and TailwindCSS for frontend, ensuring lightning-fast performance and scalability. For backend, we use scalable cloud solutions.",
+    },
+];
+---
+
+<Section id="faq" className="bg-white/5">
+    <Container className="max-w-4xl">
+        <SectionHeader title={t("faq.title")} subtitle={t("faq.subtitle")} />
+
+        <div class="space-y-4">
+            {
+                faqs.map((faq) => (
+                    <details class="group bg-dark-card border border-white/10 rounded-xl overflow-hidden transition-all duration-300 open:border-primary/50 open:shadow-[0_0_20px_rgba(112,0,255,0.1)]">
+                        <summary class="flex items-center justify-between p-6 cursor-pointer list-none text-lg font-medium hover:text-primary transition-colors">
+                            {faq.question}
+                            <span class="transition-transform duration-300 group-open:rotate-180 text-primary">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="px-6 pb-6 text-gray-400 leading-relaxed border-t border-white/5 pt-4">
+                            {faq.answer}
+                        </div>
+                    </details>
+                ))
+            }
+        </div>
+    </Container>
+</Section>

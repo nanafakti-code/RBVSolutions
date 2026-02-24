@@ -1,0 +1,112 @@
+---
+import Container from "./ui/Container.astro";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+    lang: "es" | "en";
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const steps = [
+    {
+        icon: "01",
+        title: { es: "Perfil DAM", en: "DAM Profile" },
+        desc: {
+            es: "Formación sólida en desarrollo multiplataforma.",
+            en: "Solid training in multiplatform development.",
+        },
+    },
+    {
+        icon: "02",
+        title: { es: "Fullstack", en: "Fullstack" },
+        desc: {
+            es: "Experiencia en web moderna y sistemas corporativos.",
+            en: "Experience in modern web and corporate systems.",
+        },
+    },
+    {
+        icon: "03",
+        title: { es: "Evolución", en: "Evolution" },
+        desc: {
+            es: "Aprendizaje continuo y adaptabilidad tecnológica.",
+            en: "Continuous learning and tech adaptability.",
+        },
+    },
+];
+---
+
+<section id="process" class="py-20 bg-dark/50 relative overflow-hidden">
+    <Container>
+        <!-- Centered Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2
+                class="text-4xl md:text-6xl font-bold font-display mb-6 leading-tight"
+            >
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary"
+                >
+                    {
+                        lang === "es"
+                            ? "Trayectoria Profesional"
+                            : "Professional Journey"
+                    }
+                </span>
+            </h2>
+            <p class="text-lg text-gray-400">
+                {
+                    lang === "es"
+                        ? "Un compromiso con la excelencia y el aprendizaje constante."
+                        : "A commitment to excellence and constant learning."
+                }
+            </p>
+        </div>
+
+        <!-- Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {
+                steps.map((step, index) => (
+                    <div class="step-card group relative p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm transition-all duration-500 hover:bg-white/10 hover:-translate-y-2">
+                        <div class="absolute -top-10 -left-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                        <div class="relative z-10 text-center md:text-left">
+                            <span class="block text-5xl font-display font-bold text-white/5 group-hover:text-primary transition-colors duration-300 mb-6">
+                                {step.icon}
+                            </span>
+                            <h3 class="text-2xl font-bold font-display mb-3 text-white">
+                                {step.title[lang]}
+                            </h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                {step.desc[lang]}
+                            </p>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </Container>
+</section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const stepsElements = document.querySelectorAll(".step-card");
+
+    stepsElements.forEach((step, index) => {
+        gsap.from(step, {
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+            delay: index * 0.2,
+            scrollTrigger: {
+                trigger: step,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+            },
+        });
+    });
+</script>

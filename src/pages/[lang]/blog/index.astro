@@ -1,0 +1,86 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Navbar from "../../../components/Navbar.astro";
+import Footer from "../../../components/Footer.astro";
+import Container from "../../../components/ui/Container.astro";
+import Section from "../../../components/ui/Section.astro";
+import SectionHeader from "../../../components/ui/SectionHeader.astro";
+import { getCollection } from "astro:content";
+import { languages } from "../../../i18n/ui";
+
+export function getStaticPaths() {
+    return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: "es" | "en" };
+const posts = (await getCollection("blog")).filter(
+    (post) => post.data.lang === lang,
+);
+---
+
+<Layout title={`Blog | Novatlas`} lang={lang}>
+    <Navbar lang={lang} />
+
+    <main class="pt-20">
+        <Section>
+            <Container>
+                <SectionHeader
+                    title={lang === "es" ? "Últimas Noticias" : "Latest News"}
+                    subtitle="Blog"
+                    description={lang === "es"
+                        ? "Ideas, tendencias y actualizaciones del mundo digital."
+                        : "Insights, trends, and updates from the digital world."}
+                />
+
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                >
+                    {
+                        posts.map((post) => (
+                            <a
+                                href={`/${lang}/blog/${post.slug}/`}
+                                class="group block"
+                            >
+                                <article class="glass-card rounded-2xl overflow-hidden h-full flex flex-col transition-transform duration-300 group-hover:-translate-y-2 group-hover:border-primary/50">
+                                    <div class="aspect-video overflow-hidden">
+                                        <img
+                                            src={post.data.heroImage}
+                                            alt={post.data.title}
+                                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                    </div>
+                                    <div class="p-6 flex-1 flex flex-col">
+                                        <div class="text-xs text-primary font-bold mb-2 font-display uppercase tracking-widest">
+                                            {post.data.pubDate.toLocaleDateString(
+                                                lang,
+                                                {
+                                                    year: "numeric",
+                                                    month: "long",
+                                                    day: "numeric",
+                                                },
+                                            )}
+                                        </div>
+                                        <h3 class="text-xl font-bold font-display text-white mb-3 group-hover:text-primary transition-colors">
+                                            {post.data.title}
+                                        </h3>
+                                        <p class="text-gray-400 text-sm line-clamp-3 mb-4 flex-1">
+                                            {post.data.description}
+                                        </p>
+                                        <span class="text-sm font-medium text-white group-hover:underline">
+                                            {lang === "es"
+                                                ? "Leer más"
+                                                : "Read more"}{" "}
+                                            &rarr;
+                                        </span>
+                                    </div>
+                                </article>
+                            </a>
+                        ))
+                    }
+                </div>
+            </Container>
+        </Section>
+    </main>
+
+    <Footer lang={lang} />
+</Layout>

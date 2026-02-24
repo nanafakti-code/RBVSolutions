@@ -1,0 +1,36 @@
+---
+import { cn } from "../../lib/utils";
+
+interface Props {
+    href?: string;
+    variant?: "primary" | "secondary" | "outline";
+    className?: string;
+    [key: string]: any;
+}
+
+const { href, variant = "primary", className, ...rest } = Astro.props;
+
+const baseStyles =
+    "relative inline-flex items-center justify-center gap-2 px-8 py-3 text-sm font-medium tracking-wide transition-all duration-300 rounded-full group font-display overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark";
+
+const variants = {
+    primary:
+        "bg-primary text-white hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(112,0,255,0.5)] border border-primary/50",
+    secondary:
+        "bg-secondary text-dark hover:bg-secondary/90 hover:shadow-[0_0_20px_rgba(0,198,255,0.5)] border border-secondary/50",
+    outline:
+        "bg-transparent text-white border border-white/20 hover:border-primary hover:text-primary hover:shadow-[0_0_15px_rgba(112,0,255,0.3)]",
+};
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag href={href} class={cn(baseStyles, variants[variant], className)} {...rest}>
+    <span class="relative z-10 flex items-center gap-2">
+        <slot />
+    </span>
+    <div
+        class="absolute inset-0 -z-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"
+    >
+    </div>
+</Tag>

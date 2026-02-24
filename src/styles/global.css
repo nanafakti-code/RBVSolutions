@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark: #030014;
+  --color-dark-card: #0f0c29;
+  --color-primary: #7000ff;
+  --color-secondary: #00c6ff;
+  --color-accent: #ff0055;
+
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Orbitron", sans-serif;
+
+  --animate-spin-slow: spin 15s linear infinite;
+  --animate-pulse-glow: pulse-glow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;
+  --animate-scroll-hint: scroll-hint 2s ease-in-out infinite;
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scroll-hint {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(10px);
+    }
+  }
+}
+
+/* Custom Utilities for Glassmorphism & Neon */
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10;
+  }
+
+  .glass-card {
+    @apply bg-dark-card/60 backdrop-blur-xl border border-white/10 shadow-xl;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .neon-border {
+    box-shadow: 0 0 5px theme('colors.primary'), 0 0 10px theme('colors.primary');
+  }
+
+  .hide-cursor {
+    cursor: none;
+  }
+}
+
+/* Global Styles */
+html,
+body {
+  @apply bg-dark text-white overflow-x-hidden;
+  scroll-behavior: smooth;
+  /* Fallback */
+}
+
+/* Lenis Recommended CSS */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+body {
+  font-family: var(--font-sans);
+  cursor: none;
+  /* Hide default cursor */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  cursor: none;
+  /* Ensure interactive elements also hide cursor */
+}

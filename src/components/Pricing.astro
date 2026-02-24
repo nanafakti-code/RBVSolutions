@@ -1,0 +1,155 @@
+---
+import Section from "./ui/Section.astro";
+import Container from "./ui/Container.astro";
+import SectionHeader from "./ui/SectionHeader.astro";
+import Button from "./ui/Button.astro";
+import { useTranslations } from "../i18n/utils";
+import PricingCalculator from "./react/PricingCalculator.jsx";
+
+interface Props {
+    lang: "es" | "en";
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const plans = [
+    {
+        name: "Starter",
+        price: "$2,999",
+        description:
+            lang === "es"
+                ? "Perfecto para pequeños negocios y portafolios."
+                : "Perfect for small businesses and portfolio sites.",
+        features:
+            lang === "es"
+                ? [
+                      "Diseño Personalizado",
+                      "Responsive Móvil",
+                      "Integración CMS",
+                      "SEO Básico",
+                      "1 Mes de Soporte",
+                  ]
+                : [
+                      "Custom Design",
+                      "Mobile Responsive",
+                      "CMS Integration",
+                      "SEO Basics",
+                      "1 Month Support",
+                  ],
+        popular: false,
+    },
+    {
+        name: "Business",
+        price: "$5,999",
+        description:
+            lang === "es"
+                ? "Para empresas en crecimiento que necesitan más potencia."
+                : "For growing companies needing more power.",
+        features:
+            lang === "es"
+                ? [
+                      "Animación Avanzada",
+                      "E-Commerce Listo",
+                      "Panel Admin Personalizado",
+                      "SEO Avanzado",
+                      "3 Meses de Soporte",
+                      "Optimización Rendimiento",
+                  ]
+                : [
+                      "Advanced Animation",
+                      "E-Commerce Ready",
+                      "Custom Admin Panel",
+                      "Advanced SEO",
+                      "3 Months Support",
+                      "Performance Optimization",
+                  ],
+        popular: true,
+    },
+    {
+        name: "Enterprise",
+        price: "Custom",
+        description:
+            lang === "es"
+                ? "Transformación digital a gran escala."
+                : "Full-scale digital transformation.",
+        features:
+            lang === "es"
+                ? [
+                      "Aplicaciones Web Complejas",
+                      "Integración IA",
+                      "Arquitectura Cloud",
+                      "Soporte Prioritario 24/7",
+                      "Equipo Dedicado",
+                      "Auditoría y Seguridad",
+                  ]
+                : [
+                      "Complex Web Applications",
+                      "AI Integration",
+                      "Cloud Architecture",
+                      "24/7 Priority Support",
+                      "Dedicated Team",
+                      "Audit & Security",
+                  ],
+        popular: false,
+    },
+];
+---
+
+<Section id="pricing">
+    <Container>
+        <SectionHeader
+            title={t("pricing.title")}
+            subtitle={t("pricing.subtitle")}
+            description={t("pricing.desc")}
+        />
+
+        <!-- Calculator Widget -->
+        <div class="mb-20">
+            <PricingCalculator lang={lang} client:visible />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {
+                plans.map((plan) => (
+                    <div
+                        class={`relative rounded-2xl p-8 border ${plan.popular ? "border-primary/50 bg-primary/5 shadow-[0_0_30px_rgba(112,0,255,0.1)]" : "border-white/10 bg-white/5"} transition-transform hover:-translate-y-2 duration-300`}
+                    >
+                        {plan.popular && (
+                            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-sm font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-lg">
+                                {t("pricing.popular")}
+                            </div>
+                        )}
+
+                        <h3 class="text-xl font-bold font-display mb-2">
+                            {plan.name}
+                        </h3>
+                        <div class="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                            {plan.price}
+                        </div>
+                        <p class="text-gray-400 mb-8 border-b border-white/10 pb-8 min-h-[80px]">
+                            {plan.description}
+                        </p>
+
+                        <ul class="space-y-4 mb-8">
+                            {plan.features.map((feature) => (
+                                <li class="flex items-center gap-3 text-sm text-gray-300">
+                                    <span class="text-primary">✓</span>{" "}
+                                    {feature}
+                                </li>
+                            ))}
+                        </ul>
+
+                        <Button
+                            href="#contact"
+                            variant={plan.popular ? "primary" : "outline"}
+                            className="w-full"
+                        >
+                            {t("pricing.cta")}
+                        </Button>
+                    </div>
+                ))
+            }
+        </div>
+    </Container>
+</Section>

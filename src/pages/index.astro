@@ -1,11 +1,23 @@
----
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Rafael Blanco RBV | Soluciones Web Premium</title>
+        <script>
+            const preferredLang = localStorage.getItem("preferred_lang");
+            const userLang = navigator.language;
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
----
-
-<Layout>
-	<Welcome />
-</Layout>
+            if (preferredLang === "en") {
+                window.location.replace("/en/");
+            } else if (preferredLang === "es") {
+                window.location.replace("/es/");
+            } else if (userLang.startsWith("en")) {
+                window.location.replace("/en/");
+            } else {
+                window.location.replace("/es/");
+            }
+        </script>
+    </head>
+    <body> </body>
+</html>

@@ -1,0 +1,67 @@
+---
+import { cn } from "../../lib/utils";
+
+interface Props {
+    className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<div
+    class={cn(
+        "glass-card p-6 rounded-2xl relative group overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(112,0,255,0.15)] magnetic-card",
+        className,
+    )}
+>
+    <div
+        class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+    >
+    </div>
+
+    <!-- Shiny border effect -->
+    <div
+        class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 group-hover:ring-white/20 transition-all duration-500 pointer-events-none"
+    >
+    </div>
+
+    <div
+        class="relative z-10 transition-transform duration-300 group-hover:scale-[1.02]"
+    >
+        <slot />
+    </div>
+</div>
+
+<script>
+    import { gsap } from "gsap";
+
+    const cards = document.querySelectorAll(".magnetic-card");
+
+    cards.forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+            const rect = (card as HTMLElement).getBoundingClientRect();
+            const x = (e as MouseEvent).clientX - rect.left - rect.width / 2;
+            const y = (e as MouseEvent).clientY - rect.top - rect.height / 2;
+
+            gsap.to(card, {
+                x: x * 0.1,
+                y: y * 0.1,
+                rotationX: -y * 0.05,
+                rotationY: x * 0.05,
+                duration: 0.5,
+                ease: "power2.out",
+            });
+        });
+
+        card.addEventListener("mouseleave", () => {
+            gsap.to(card, {
+                x: 0,
+                y: 0,
+                rotationX: 0,
+                rotationY: 0,
+                duration: 0.5,
+                ease: "power2.out",
+            });
+        });
+    });
+</script>
