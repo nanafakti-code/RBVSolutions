@@ -10,6 +10,7 @@ import "@fontsource/orbitron/700.css";
 import "@fontsource/orbitron/900.css";
 
 import CustomCursor from "../components/ui/CustomCursor.astro";
+import BottomNav from "../components/BottomNav.astro";
 
 interface Props {
   title: string;
@@ -65,8 +66,27 @@ const {
     >
     </div>
 
-    <CustomCursor />
-    <slot />
+    <div class="hidden md:block">
+      <CustomCursor />
+    </div>
+    <main class="mobile-padding">
+      <slot />
+    </main>
+    <BottomNav lang={lang} />
+
+    <style is:global>
+      @media (max-width: 767px) {
+        .mobile-padding {
+          padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        }
+
+        /* Disable custom cursor behavior on mobile if it injects styles */
+        #cursor,
+        #cursor-follower {
+          display: none !important;
+        }
+      }
+    </style>
 
     <script>
       import Lenis from "lenis";

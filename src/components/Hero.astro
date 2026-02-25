@@ -1,4 +1,5 @@
 ---
+import logo from "../assets/logo.png";
 import Container from "./ui/Container.astro";
 import Button from "./ui/Button.astro";
 import { useTranslations } from "../i18n/utils";
@@ -12,7 +13,7 @@ const t = useTranslations(lang);
 ---
 
 <section
-    class="relative h-screen min-h-[800px] flex items-center justify-center overflow-hidden pt-20 perspective-1000"
+    class="relative h-screen min-h-[700px] md:min-h-[800px] flex items-center justify-center overflow-hidden pt-4 md:pt-20 perspective-1000"
 >
     <!-- Dynamic Background -->
     <div class="absolute inset-0 bg-dark">
@@ -32,6 +33,20 @@ const t = useTranslations(lang);
     </div>
 
     <Container className="relative z-10 text-center">
+        <!-- Mobile Only Logo -->
+        <div
+            id="hero-logo-mobile"
+            class="md:hidden flex justify-center mb-2 opacity-0 scale-95"
+        >
+            <div class="logo-mobile-wrapper transition-all duration-200">
+                <img
+                    src={logo.src}
+                    alt="Rafael Blanco Logo"
+                    class="h-[160px] w-auto object-contain hero-logo-float"
+                />
+            </div>
+        </div>
+
         <div
             id="hero-badge"
             class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-secondary mb-8 opacity-0 translate-y-4"
@@ -48,7 +63,7 @@ const t = useTranslations(lang);
         </div>
 
         <h1
-            class="text-5xl md:text-7xl lg:text-8xl font-bold font-display tracking-tighter mb-8 leading-tight"
+            class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-display tracking-tighter mb-8 leading-tight"
         >
             <span
                 class="hero-text-line block bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/50 opacity-0 translate-y-8"
@@ -64,14 +79,14 @@ const t = useTranslations(lang);
 
         <p
             id="hero-desc"
-            class="text-lg md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed opacity-0 translate-y-4"
+            class="text-base md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed opacity-0 translate-y-4 px-4 md:px-0"
         >
             {t("hero.desc")}
         </p>
 
         <div
             id="hero-cta"
-            class="flex flex-col sm:flex-row items-center justify-center gap-6 opacity-0 translate-y-4"
+            class="flex flex-col sm:flex-row items-center justify-center gap-6 opacity-0 translate-y-4 px-6 md:px-0"
         >
             <Button
                 href="#contact"
@@ -92,10 +107,10 @@ const t = useTranslations(lang);
         </div>
     </Container>
 
-    <!-- Scroll Indicator -->
+    <!-- Scroll Indicator (Hidden on Mobile) -->
     <div
         id="scroll-indicator"
-        class="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-0"
+        class="hidden md:flex absolute bottom-12 left-1/2 -translate-x-1/2 opacity-0"
     >
         <div
             class="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1"
@@ -113,6 +128,31 @@ const t = useTranslations(lang);
     .text-glow-lg {
         text-shadow: 0 0 30px rgba(112, 0, 255, 0.3);
     }
+
+    /* Mobile Logo Animations */
+    @media (max-width: 767px) {
+        .hero-logo-float {
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(112, 0, 255, 0.15));
+        }
+
+        .logo-mobile-wrapper:active {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 25px rgba(112, 0, 255, 0.6));
+        }
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-8px);
+        }
+        100% {
+            transform: translateY(0px);
+        }
+    }
 </style>
 
 <script>
@@ -121,21 +161,35 @@ const t = useTranslations(lang);
     // Hero Entrance Animation
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    tl.to("#hero-badge", { opacity: 1, y: 0, duration: 1, delay: 0.2 })
+    // Initial check to animate mobile logo if visible
+    if (window.innerWidth < 768) {
+        tl.to("#hero-logo-mobile", {
+            opacity: 1,
+            scale: 1,
+            duration: 1,
+            delay: 0.3,
+        });
+    }
+
+    tl.to("#hero-badge", { opacity: 1, y: 0, duration: 1 }, "-=0.5")
         .to(
             ".hero-text-line",
             { opacity: 1, y: 0, duration: 1.2, stagger: 0.2 },
-            "-=0.5",
+            "-=0.7",
         )
         .to("#hero-desc", { opacity: 1, y: 0, duration: 1 }, "-=0.8")
-        .to("#hero-cta", { opacity: 1, y: 0, duration: 1 }, "-=0.8")
-        .to("#scroll-indicator", { opacity: 1, duration: 1 }, "-=0.5");
+        .to("#hero-cta", { opacity: 1, y: 0, duration: 1 }, "-=0.8");
 
-    // Mouse Parallax & Glow
+    // Desktop only scroll indicator animation
+    if (window.innerWidth >= 768) {
+        tl.to("#scroll-indicator", { opacity: 1, duration: 1 }, "-=0.5");
+    }
+
+    // Mouse Parallax & Glow (Desktop Only for performance)
     const section = document.querySelector("section");
     const glow = document.getElementById("hero-glow");
 
-    if (section && glow) {
+    if (section && glow && window.innerWidth >= 1024) {
         section.addEventListener("mousemove", (e) => {
             const { clientX, clientY } = e;
             const x = (clientX / window.innerWidth - 0.5) * 2;
@@ -149,7 +203,7 @@ const t = useTranslations(lang);
                 ease: "power2.out",
             });
 
-            // Tilt text slightly (optional, subtle)
+            // Tilt text slightly
             gsap.to(".hero-text-line", {
                 x: x * 20,
                 y: y * 20,
