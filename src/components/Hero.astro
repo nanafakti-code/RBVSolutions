@@ -13,7 +13,7 @@ const t = useTranslations(lang);
 ---
 
 <section
-    class="relative h-screen min-h-[700px] md:min-h-[800px] flex items-center justify-center overflow-hidden pt-4 md:pt-20 perspective-1000"
+    class="relative min-h-[100svh] md:min-h-[800px] flex items-start md:items-center justify-center overflow-hidden pt-[calc(env(safe-area-inset-top)+1.5rem)] md:pt-20 perspective-1000"
 >
     <!-- Dynamic Background -->
     <div class="absolute inset-0 bg-dark">
@@ -32,24 +32,24 @@ const t = useTranslations(lang);
         </div>
     </div>
 
-    <Container className="relative z-10 text-center">
+    <Container className="relative z-10 text-center w-full">
         <!-- Mobile Only Logo -->
         <div
             id="hero-logo-mobile"
-            class="md:hidden flex justify-center mb-2 opacity-0 scale-95"
+            class="md:hidden flex justify-center mb-5 opacity-0 scale-95"
         >
             <div class="logo-mobile-wrapper transition-all duration-200">
                 <img
                     src={logo.src}
                     alt="Rafael Blanco Logo"
-                    class="h-[160px] w-auto object-contain hero-logo-float"
+                    class="h-[200px] min-h-[180px] max-h-[220px] w-auto object-contain hero-logo-float"
                 />
             </div>
         </div>
 
         <div
             id="hero-badge"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-secondary mb-8 opacity-0 translate-y-4"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-secondary mb-5 md:mb-8 opacity-0 translate-y-4"
         >
             <span class="relative flex h-2 w-2">
                 <span
@@ -63,7 +63,7 @@ const t = useTranslations(lang);
         </div>
 
         <h1
-            class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-display tracking-tighter mb-8 leading-tight"
+            class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-display tracking-tighter mb-4 md:mb-8 leading-tight"
         >
             <span
                 class="hero-text-line block bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/50 opacity-0 translate-y-8"
@@ -79,14 +79,14 @@ const t = useTranslations(lang);
 
         <p
             id="hero-desc"
-            class="text-base md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed opacity-0 translate-y-4 px-4 md:px-0"
+            class="text-base md:text-2xl text-gray-400 max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed opacity-0 translate-y-4 px-4 md:px-0"
         >
             {t("hero.desc")}
         </p>
 
         <div
             id="hero-cta"
-            class="flex flex-col sm:flex-row items-center justify-center gap-6 opacity-0 translate-y-4 px-6 md:px-0"
+            class="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 opacity-0 translate-y-4 px-6 md:px-0"
         >
             <Button
                 href="#contact"
